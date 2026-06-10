@@ -295,6 +295,38 @@ void affichageTime(){
   }
 }
 
+void timeSettings(byte s){
+  int currentTime=stageTime[s];
+  
+
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
+
+  compteur=stageTime[s];
+  delay(200);
+
+  while(digitalRead(pinArduinoRaccordementSignalSW) == HIGH){
+    if(compteur<0)compteur=99;
+    if(compteur>99)compteur=0;
+    stageTime[s]=compteur;
+    //initialisation écran
+    display.clearDisplay();
+    //affichage Titre de section
+    display.setTextSize(1);
+    display.setCursor(5, 5 );
+    display.print(stageName[s]);
+    //affichage du nouveau temps
+    display.setTextSize(3);
+    display.setCursor(40, 30);
+    display.print(compteur/10);
+    display.print(compteur%10);
+    //actualisation écran
+    display.display();
+  }
+  if(pause)time=stageTime[stage]*60;
+  compteur=6;
+}
+
 void fctMenu(){
 
   //initialisation écran
@@ -315,16 +347,16 @@ void fctMenu(){
     display.setCursor(5, 10);
     if(pause)display.print("play"); else display.print("stop");
     display.setCursor(5, 20);
-    display.print("period");
-    display.setCursor(5, 30);
     display.print("pomodoro ");
     display.print(stageTime[0]);
-    display.setCursor(5, 40);
+    display.setCursor(5, 30);
     display.print("short break ");
     display.print(stageTime[1]);
-    display.setCursor(5, 50);
+    display.setCursor(5, 40);
     display.print("long break ");
     display.print(stageTime[2]);
+    display.setCursor(5, 50);
+    display.print("intensite");
   }
   //page 2
   else{
@@ -345,10 +377,13 @@ void fctMenu(){
         pause=!pause;
         break;
       case 1:
+        timeSettings(0);
         break;
       case 2:
+        timeSettings(1);
         break;
       case 3:
+        timeSettings(2);
         break;
       case 4:
         break ;
