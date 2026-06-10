@@ -30,6 +30,9 @@
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 
+//constantes
+#define nombre_choix_menu 4
+
 //informations EEPROM
 const byte LongueurSon[2] = {32,33};
 const byte AdresseNotes[2] = {0,AdresseNotes[0]+sizeof(int)*LongueurSon[0]+1+sizeof(byte)*LongueurSon[0]+1};
@@ -43,7 +46,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 byte menu=0;
 int etatPrecedentLigneCLK = digitalRead(pinArduinoRaccordementSignalCLK);
 int etatPrecedentLigneDT  = digitalRead(pinArduinoRaccordementSignalDT);
-int compteur = 6;
+int compteur = nombre_choix_menu;
 byte intensite=4;
 int secondeMinuteur=0;
 byte minuteurActiv=0;
@@ -171,100 +174,6 @@ void affichage_chiffre(byte matrice, byte chiffre) {
   }
 }
 
-/*void lancementMinuteur(){
-  byte minutes=0,heures=0,secondes=0;
-  
-  //initilaisation écran pour l'heure
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-
-  //réglage des heures
-  delay(200);
-  compteur=0;
-  while(digitalRead(pinArduinoRaccordementSignalSW) == HIGH){
-    if(compteur<0)compteur=23;
-    if(compteur>23)compteur=0;
-    heures=compteur;
-    //initialisation écran
-    display.clearDisplay();
-    //affichage Titre de section
-    display.setCursor(5, 5 );
-    display.print("MINUTEUR");
-    //affichage de l'heure
-    display.setCursor(5, 30);
-    display.print(heures/10);
-    display.print(heures%10);
-    display.print(":");
-    display.print(minutes/10);
-    display.print(minutes%10);
-    display.print(":");
-    display.print(secondes/10);
-    display.print(secondes%10);
-    //affichage curseur
-    display.fillRect(5,55,25,4,WHITE);
-    //actualisation écran
-    display.display();
-  }
-  
-  //réglage des minutes
-  delay(200);
-  compteur=0;
-  while(digitalRead(pinArduinoRaccordementSignalSW) == HIGH){
-    if(compteur<0)compteur=59;
-    if(compteur>59)compteur=0;
-    minutes=compteur;
-    //initialisation écran
-    display.clearDisplay();
-    //affichage Titre de section
-    display.setCursor(5, 5 );
-    display.print("MINUTEUR");
-    //affichage de l'heure
-    display.setCursor(5, 30);
-    display.print(heures/10);
-    display.print(heures%10);
-    display.print(":");
-    display.print(minutes/10);
-    display.print(minutes%10);
-    display.print(":");
-    display.print(secondes/10);
-    display.print(secondes%10);
-    //affichage curseur
-    display.fillRect(40,55,25,4,WHITE);
-    //actualisation écran
-    display.display();
-  }
-
-  //réglage des secondes
-  delay(200);
-  compteur=0;
-  while(digitalRead(pinArduinoRaccordementSignalSW) == HIGH){
-    if(compteur<0)compteur=59;
-    if(compteur>59)compteur=0;
-    secondes=compteur;
-    //initialisation écran
-    display.clearDisplay();
-    //affichage Titre de section
-    display.setCursor(5, 5 );
-    display.print("MINUTEUR");
-    //affichage de l'heure
-    display.setCursor(5, 30);
-    display.print(heures/10);
-    display.print(heures%10);
-    display.print(":");
-    display.print(minutes/10);
-    display.print(minutes%10);
-    display.print(":");
-    display.print(secondes/10);
-    display.print(secondes%10);
-    //affichage curseur
-    display.fillRect(75,55,25,4,WHITE);
-    //actualisation écran
-    display.display();
-  }
-  compteur=abs(menu-6);
-}
-*/
-
 void affichageTime(){
   boolean points;
   if(millis()-lastSecond>=1000 && !pause){
@@ -324,7 +233,7 @@ void timeSettings(byte s){
     display.display();
   }
   if(pause)time=stageTime[stage]*60;
-  compteur=6;
+  compteur=nombre_choix_menu;
 }
 
 void fctMenu(){
@@ -333,9 +242,9 @@ void fctMenu(){
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(WHITE);
-  if(compteur<0)compteur=6;
-  if(compteur>6)compteur=0;
-  menu=abs(compteur-6);
+  if(compteur<0)compteur=nombre_choix_menu;
+  if(compteur>nombre_choix_menu)compteur=0;
+  menu=abs(compteur-nombre_choix_menu);
   
   //affichage indication de réglages
   display.setCursor(5,0);
@@ -343,7 +252,7 @@ void fctMenu(){
 
   //affichage menu
   //page 1
-  if(menu<5){
+  if(menu<nombre_choix_menu+1){
     display.setCursor(5, 10);
     if(pause)display.print("play"); else display.print("stop");
     display.setCursor(5, 20);
@@ -360,10 +269,6 @@ void fctMenu(){
   }
   //page 2
   else{
-    display.setCursor(5, 10);
-    display.print("intensite");
-    display.setCursor(5, 20);
-    display.print("minuteur");
   }
 
   //affichage curseur
@@ -386,19 +291,26 @@ void fctMenu(){
         timeSettings(2);
         break;
       case 4:
-        break ;
-      case 5:
-        break ;
-      case 6:
+        intensite++;
+        for (int i = 0; i < 4; i++) {
+          matriceled.setIntensity(i, intensite);
+        }
         break ;
     }
     delay(300);
   }
 }
 
-/*void sonnerie(){
-  //réveil
-  if(0){
+void sonnerie(){
+  tone(buzzer, 250);
+  delay(500);
+  noTone(buzzer);
+  delay(250);
+  tone(buzzer, 300);
+  delay(500);
+  noTone(buzzer);
+
+  /*if(0){
     for (byte j = 0; j < LongueurSon[0]; j++) {
       int notes;
       byte temps;
@@ -413,28 +325,16 @@ void fctMenu(){
       digitalWrite(PIN_TRIG, LOW);
       int duration = pulseIn(PIN_ECHO, HIGH);
     }
-  }
-  //fin minuteur
-  int tempsActu=1;
-  if(tempsActu>=secondeMinuteur && minuteurActiv){
-    minuteurActiv=0;
-    tone(buzzer, 250);
-    delay(500);
-    noTone(buzzer);
-    delay(250);
-    tone(buzzer, 300);
-    delay(500);
-    noTone(buzzer);
-  }
+  }*/
 }
-*/
+
 
 void loop() {
   affichageTime();
-  if(time<=0 && stage<2){
-    stage++;
+  if(time<=0){
+    if(stage<2)stage++;else stage=0;
     time=stageTime[stage]*60;
-    //sonnerie()
+    sonnerie();
   }
   fctMenu();
 }
