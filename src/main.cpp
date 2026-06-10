@@ -47,12 +47,12 @@ int compteur = 6;
 byte intensite=4;
 int secondeMinuteur=0;
 byte minuteurActiv=0;
-int pomodoro=25;
-int short_break=5;
-int long_break=15;
-int time=pomodoro*60;
+int stageTime[3]={25,5,15};
+int time=stageTime[0]*60;
+String stageName[3]={"Pomodoro","Short break","Long break"};
 byte activite=0;
 boolean pause=true;
+byte stage=0;
 unsigned long lastSecond= millis();
 
 //dessin des chiffres dans la matrices led
@@ -307,15 +307,7 @@ void fctMenu(){
   
   //affichage indication de réglages
   display.setCursor(5,0);
-  display.print(1);
-  display.setCursor(25,0);
-  display.print(2);
-  display.setCursor(55,0);
-  display.print(3);
-  display.setCursor(80,0);
-  display.print(4);
-  display.setCursor(105,0);
-  display.print(5);
+  display.print(stageName[stage]);
 
   //affichage menu
   //page 1
@@ -326,13 +318,13 @@ void fctMenu(){
     display.print("period");
     display.setCursor(5, 30);
     display.print("pomodoro ");
-    display.print(pomodoro);
+    display.print(stageTime[0]);
     display.setCursor(5, 40);
     display.print("short break ");
-    display.print(short_break);
+    display.print(stageTime[1]);
     display.setCursor(5, 50);
     display.print("long break ");
-    display.print(long_break);
+    display.print(stageTime[2]);
   }
   //page 2
   else{
@@ -404,8 +396,10 @@ void fctMenu(){
 
 void loop() {
   affichageTime();
-
+  if(time<=0 && stage<2){
+    stage++;
+    time=stageTime[stage]*60;
+    //sonnerie()
+  }
   fctMenu();
-
-  //sonnerie();
 }
