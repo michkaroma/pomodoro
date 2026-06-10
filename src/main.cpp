@@ -43,13 +43,14 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 byte menu=0;
 int etatPrecedentLigneCLK = digitalRead(pinArduinoRaccordementSignalCLK);
 int etatPrecedentLigneDT  = digitalRead(pinArduinoRaccordementSignalDT);
-byte compteur = 6;
+int compteur = 6;
 byte intensite=4;
 int secondeMinuteur=0;
 byte minuteurActiv=0;
-int pomodoro;
-int short_break;
-int long_break;
+int pomodoro=25;
+int short_break=5;
+int long_break=15;
+int time=pomodoro*60;
 
 //dessin des chiffres dans la matrices led
 byte digits[10][8] = {
@@ -167,7 +168,7 @@ void affichage_chiffre(byte matrice, byte chiffre) {
   }
 }
 
-void lancementMinuteur(){
+/*void lancementMinuteur(){
   byte minutes=0,heures=0,secondes=0;
   
   //initilaisation écran pour l'heure
@@ -259,14 +260,16 @@ void lancementMinuteur(){
   }
   compteur=abs(menu-6);
 }
+*/
 
-void affichageHeure(){
-  
-    affichage_chiffre(3, 1);
-    affichage_chiffre(2, 2);
+void affichageTime(){
+  int minutes=(time/60);
+  int secondes=(time%60);
+  affichage_chiffre(3, minutes/10);
+  affichage_chiffre(2, minutes%10);
   //affichage des minutes
-  affichage_chiffre(1,3);
-  affichage_chiffre(0,4);
+  affichage_chiffre(1,secondes/10);
+  affichage_chiffre(0,secondes%10);
   //affichage des deux points
   if(1){
     matriceled.setLed(1, 2, 0, true);
@@ -312,11 +315,14 @@ void fctMenu(){
     display.setCursor(5, 20);
     display.print("period");
     display.setCursor(5, 30);
-    display.print("pomodoro");
+    display.print("pomodoro ");
+    display.print(pomodoro);
     display.setCursor(5, 40);
-    display.print("short break");
+    display.print("short break ");
+    display.print(short_break);
     display.setCursor(5, 50);
-    display.print("long break");
+    display.print("long break ");
+    display.print(long_break);
   }
   //page 2
   else{
@@ -385,7 +391,7 @@ void sonnerie(){
 }
 
 void loop() {
-  affichageHeure();
+  affichageTime();
 
   fctMenu();
 
