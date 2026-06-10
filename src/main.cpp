@@ -32,7 +32,7 @@
 
 //informations EEPROM
 const byte LongueurSon[2] = {32,33};
-const byte AdresseNotes[2] = {0,AdresseNotes[0]+sizeof(int)*LongueurSon[0]+1+sizeof(byte)*LongueurSon[0] +1};
+const byte AdresseNotes[2] = {0,AdresseNotes[0]+sizeof(int)*LongueurSon[0]+1+sizeof(byte)*LongueurSon[0]+1};
 const byte AdresseTemps[2] = {AdresseNotes[0]+sizeof(int)*LongueurSon[0]+1,AdresseNotes[1]+sizeof(int)*LongueurSon[0]+1};
 
 //initialisation de différent truc
@@ -51,6 +51,9 @@ int pomodoro=25;
 int short_break=5;
 int long_break=15;
 int time=pomodoro*60;
+byte activite=0;
+boolean pause=true;
+unsigned long lastSecond= millis();
 
 //dessin des chiffres dans la matrices led
 byte digits[10][8] = {
@@ -263,15 +266,22 @@ void affichage_chiffre(byte matrice, byte chiffre) {
 */
 
 void affichageTime(){
+  boolean points;
+  if(millis()-lastSecond>=1000 && !pause){
+    time--;
+    points=!points;
+    lastSecond=millis();
+  }
   int minutes=(time/60);
   int secondes=(time%60);
+  //affichage des minutes
   affichage_chiffre(3, minutes/10);
   affichage_chiffre(2, minutes%10);
-  //affichage des minutes
+  //affichage des secondes
   affichage_chiffre(1,secondes/10);
   affichage_chiffre(0,secondes%10);
   //affichage des deux points
-  if(1){
+  if(points){
     matriceled.setLed(1, 2, 0, true);
     matriceled.setLed(1, 5, 0, true);
     matriceled.setLed(2, 2, 7, false);
@@ -311,7 +321,7 @@ void fctMenu(){
   //page 1
   if(menu<5){
     display.setCursor(5, 10);
-    display.print("play/stop");
+    if(pause)display.print("play"); else display.print("stop");
     display.setCursor(5, 20);
     display.print("period");
     display.setCursor(5, 30);
@@ -340,25 +350,26 @@ void fctMenu(){
   if(digitalRead(pinArduinoRaccordementSignalSW) == LOW){
     switch(menu){
       case 0:
-      break;
+        pause=!pause;
+        break;
       case 1:
-      break;
+        break;
       case 2:
-      break;
+        break;
       case 3:
-      break;
+        break;
       case 4:
-      break ;
+        break ;
       case 5:
-      break ;
+        break ;
       case 6:
-      break ;
+        break ;
     }
     delay(300);
   }
 }
 
-void sonnerie(){
+/*void sonnerie(){
   //réveil
   if(0){
     for (byte j = 0; j < LongueurSon[0]; j++) {
@@ -389,11 +400,12 @@ void sonnerie(){
     noTone(buzzer);
   }
 }
+*/
 
 void loop() {
   affichageTime();
 
   fctMenu();
 
-  sonnerie();
+  //sonnerie();
 }
