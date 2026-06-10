@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "author": "Uri Shaked",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-nano", "id": "nano", "top": 163.8, "left": 169.2, "attrs": {} },
+    {
+      "type": "wokwi-max7219-matrix",
+      "id": "matrix1",
+      "top": -47.4,
+      "left": 199.44,
+      "attrs": { "chain": "4" }
+    },
+    {
+      "type": "board-ssd1306",
+      "id": "oled1",
+      "top": 195.14,
+      "left": 605.03,
+      "attrs": { "i2cAddress": "0x3c" }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "bz1",
+      "top": 136.8,
+      "left": 357,
+      "attrs": { "volume": "0.1" }
+    },
+    { "type": "wokwi-ky-040", "id": "encoder1", "top": 59.3, "left": -10.4, "attrs": {} }
+  ],
+  "connections": [
+    [ "encoder1:GND", "nano:GND.2", "black", [ "v183.2", "h240", "v-134.4", "h-51.1" ] ],
+    [ "encoder1:VCC", "nano:5V", "red", [ "h9.6", "v163.6", "h179.3" ] ],
+    [
+      "oled1:GND",
+      "nano:GND.2",
+      "black",
+      [ "v-9.6", "h-48", "v96", "h-249.6", "v-134.4", "h-51.1" ]
+    ],
+    [ "oled1:VCC", "nano:5V", "red", [ "v-19.2", "h-67.05", "v76.8", "h-291.1" ] ],
+    [ "oled1:SCL", "nano:A5", "orange", [ "v-28.8", "h-95.7", "v67.2", "h-300.7" ] ],
+    [ "oled1:SDA", "nano:A4", "green", [ "v-38.4", "h-95.93", "v86.4", "h-319.9" ] ],
+    [ "nano:5V", "matrix1:V+", "red", [ "v33", "h-313.7", "v-316.8", "h556.8" ] ],
+    [
+      "matrix1:GND",
+      "nano:GND.2",
+      "black",
+      [ "h9.6", "v-48", "h-576", "v355.2", "h374.4", "v-134.4", "h-51.1" ]
+    ],
+    [ "encoder1:SW", "nano:5", "gray", [ "h19.2", "v67.3", "h240" ] ],
+    [ "encoder1:DT", "nano:4", "white", [ "h28.8", "v67.3", "h249.6" ] ],
+    [ "encoder1:CLK", "nano:3", "gold", [ "h38.4", "v67.2", "h48" ] ],
+    [ "matrix1:DIN", "nano:11", "blue", [ "h9.6", "v115.2", "h-355.2" ] ],
+    [ "matrix1:CS", "nano:10", "purple", [ "h19.2", "v86.4", "h-354.9" ] ],
+    [ "matrix1:CLK", "nano:13", "magenta", [ "h28.8", "v86.4", "h-403.2", "v130.2" ] ],
+    [ "bz1:2", "nano:8", "red", [ "h38", "v-105.6", "h-204.7" ] ],
+    [ "nano:GND.2", "bz1:1", "black", [ "v-15", "h51.1", "v67.2" ] ]
+  ],
+  "dependencies": {}
+}
