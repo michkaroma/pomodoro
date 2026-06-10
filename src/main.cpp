@@ -57,6 +57,7 @@ byte activite=0;
 boolean pause=true;
 byte stage=0;
 unsigned long lastSecond= millis();
+boolean points=true;
 
 //dessin des chiffres dans la matrices led
 byte digits[10][8] = {
@@ -175,7 +176,6 @@ void affichage_chiffre(byte matrice, byte chiffre) {
 }
 
 void affichageTime(){
-  boolean points;
   if(millis()-lastSecond>=1000 && !pause){
     time--;
     points=!points;
@@ -291,7 +291,7 @@ void fctMenu(){
         timeSettings(2);
         break;
       case 4:
-        intensite++;
+        intensite=(intensite+1)%16;
         for (int i = 0; i < 4; i++) {
           matriceled.setIntensity(i, intensite);
         }
