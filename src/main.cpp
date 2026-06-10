@@ -1,13 +1,11 @@
-#include <RTClib.h>
 #include <LedControl.h>
-#include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_GFX.h>
-#include <EEPROM.h>
+//#include <EEPROM.h>
 
 //note utilisé par le buzzer
-#define NOTE_B3  247
+/*#define NOTE_B3  247
 #define NOTE_C4  262
 #define NOTE_CS4 277
 #define NOTE_D4  294
@@ -17,7 +15,7 @@
 #define NOTE_G4  392
 #define NOTE_B4  494
 #define NOTE_C5  523
-
+*/
 //PIN
 #define buzzer 8
 #define pinArduinoRaccordementSignalSW  5
@@ -31,12 +29,12 @@
 #define SCREEN_HEIGHT 64
 
 //constantes
-#define nombre_choix_menu 4
+#define nombre_choix_menu 5
 
 //informations EEPROM
-const byte LongueurSon[2] = {32,33};
-const byte AdresseNotes[2] = {0,AdresseNotes[0]+sizeof(int)*LongueurSon[0]+1+sizeof(byte)*LongueurSon[0]+1};
-const byte AdresseTemps[2] = {AdresseNotes[0]+sizeof(int)*LongueurSon[0]+1,AdresseNotes[1]+sizeof(int)*LongueurSon[0]+1};
+////const byte LongueurSon[2] = {32,33};
+//const byte AdresseNotes[2] = {0,AdresseNotes[0]+sizeof(int)*LongueurSon[0]+1+sizeof(byte)*LongueurSon[0]+1};
+//const byte AdresseTemps[2] = {AdresseNotes[0]+sizeof(int)*LongueurSon[0]+1,AdresseNotes[1]+sizeof(int)*LongueurSon[0]+1};
 
 //initialisation de différent truc
 LedControl matriceled = LedControl(11, 13, 10, 4);
@@ -58,6 +56,7 @@ boolean pause=true;
 byte stage=0;
 unsigned long lastSecond= millis();
 boolean points=true;
+boolean longBreak=false;
 
 //dessin des chiffres dans la matrices led
 byte digits[10][8] = {
@@ -252,7 +251,7 @@ void fctMenu(){
 
   //affichage menu
   //page 1
-  if(menu<nombre_choix_menu+1){
+  if(menu<5){
     display.setCursor(5, 10);
     if(pause)display.print("play"); else display.print("stop");
     display.setCursor(5, 20);
@@ -265,10 +264,12 @@ void fctMenu(){
     display.print("long break ");
     display.print(stageTime[2]);
     display.setCursor(5, 50);
-    display.print("intensite");
+    display.print("reset");
   }
   //page 2
   else{
+    display.setCursor(5, 10);
+    display.print("intensite");
   }
 
   //affichage curseur
@@ -291,6 +292,12 @@ void fctMenu(){
         timeSettings(2);
         break;
       case 4:
+        longBreak=false;
+        stage=0;
+        pause=true;
+        time=stageTime[0]*60;
+        break;
+      case 5:
         intensite=(intensite+1)%16;
         for (int i = 0; i < 4; i++) {
           matriceled.setIntensity(i, intensite);
@@ -332,7 +339,18 @@ void sonnerie(){
 void loop() {
   affichageTime();
   if(time<=0){
-    if(stage<2)stage++;else stage=0;
+    switch(stage){
+      case 0:
+        stage++;
+        break;
+      case 1:
+        if(longBreak)stage++;else stage=0;
+        longBreak=!longBreak;
+        break;
+      case 2:
+        stage=0;
+        break;
+    }
     time=stageTime[stage]*60;
     sonnerie();
   }
