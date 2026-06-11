@@ -8,7 +8,7 @@ The full Pomodoro cycle (work → short break → work → short break → long 
 
 ---
 
-## 📸 Demo
+## Demo
 
 | In action | OLED menu | Wokwi |
 |-----------|-----------|-------|
@@ -16,7 +16,7 @@ The full Pomodoro cycle (work → short break → work → short break → long 
 
 ---
 
-## 🎯 Features
+## Features
 
 - **Full Pomodoro cycle** — automatically chains work sessions and breaks: `Pomodoro → short break → Pomodoro → short break → long break`, then repeats.
 - **Adjustable durations** — set the length of each phase (Pomodoro / short break / long break) directly on the device with the rotary encoder.
@@ -28,7 +28,7 @@ The full Pomodoro cycle (work → short break → work → short break → long 
 
 ---
 
-## 🔧 Hardware
+## Hardware
 
 | Component | Description |
 |-----------|-------------|
@@ -41,7 +41,7 @@ The full Pomodoro cycle (work → short break → work → short break → long 
 
 ---
 
-## 🔌 Wiring
+## Wiring
 
 ### LED Matrix — MAX7219 (`LedControl(DIN=11, CLK=13, CS=10, 4 devices)`)
 | Arduino Nano | Matrix |
@@ -79,7 +79,7 @@ The full Pomodoro cycle (work → short break → work → short break → long 
 
 ---
 
-## 💻 Software
+## Software
 
 - **Language:** C++
 - **Build system:** [PlatformIO](https://platformio.org)
@@ -98,7 +98,7 @@ Declare them in `platformio.ini` under `lib_deps`.
 
 ---
 
-## 🧠 How It Works
+## How It Works
 
 1. On startup the OLED shows the menu: **play/stop**, **pomodoro**, **short break**, **long break**, **reset** (plus a second page for **brightness**).
 2. Rotating the encoder moves the cursor through the menu; pressing the button selects an item.
@@ -116,7 +116,7 @@ The countdown digits are drawn by writing custom 8×8 bitmaps (defined in the `d
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -137,7 +137,7 @@ The repo includes `diagram.json` and `wokwi.toml`, so the project can be run dir
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 pomodoro/
@@ -153,7 +153,7 @@ pomodoro/
 
 ---
 
-## 🛣️ Possible Improvements
+## Possible Improvements
 
 - Persist custom durations to **EEPROM** so they survive a power cycle (scaffolding is present in the source).
 - End-of-phase **melodies** instead of simple beeps (commented-out note tables included).
@@ -161,7 +161,7 @@ pomodoro/
 
 ---
 
-## 🎓 Context
+## Context
 
 Personal project built during studies at **ECE Paris** — and put to use revising for end-of-term exams.
 Goal: practice embedded C++ programming, I²C/SPI bus management, interrupt-driven inputs, and hardware prototyping.
