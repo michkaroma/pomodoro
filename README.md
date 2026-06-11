@@ -11,8 +11,8 @@ The full Pomodoro cycle (work → short break → work → short break → long 
 ## Demo
 
 | In action | OLED menu | Wokwi |
-|-----------|-----------|----------------|
-| ![LED matrix showing the countdown](.github/demo4.jpg) | ![OLED menu screen](.github/demo2.jpg) | ![Rotary encoder close-up](.github/wokwi.png) |
+|:---:|:---:|:---:|
+| <img src=".github/demo4.jpg" width="250"> | <img src=".github/demo2.jpg" width="250"> | <img src=".github/wokwi.png" width="250"> |
 
 ---
 
