@@ -2,7 +2,7 @@
 
 A physical Pomodoro timer built around an Arduino Nano, a 32×8 LED matrix, an OLED display, a rotary encoder, and a buzzer. Designed as a dedicated, distraction-free productivity device — no phone, no computer, just focused work.
 
-The full Pomodoro cycle (work → short break → work → short break → long break) runs automatically, all durations are adjustable on the device itself, and the remaining time is displayed in large hand-drawn digits on the LED matrix.
+The full Pomodoro cycle (work → short break → work → short break → long break) runs automatically, all durations are adjustable on the device itself, and the remaining time is displayed in large hand-drawn digits on the LED matrix. The electronics are housed in a custom 3D-printed enclosure.
 
 > Prototyped and simulated with [Wokwi](https://wokwi.com) before hardware assembly. Built with [PlatformIO](https://platformio.org).
 
@@ -10,9 +10,13 @@ The full Pomodoro cycle (work → short break → work → short break → long 
 
 ## Demo
 
-| In action | OLED menu | Wokwi |
+| Finished device | Top view | OLED menu |
 |:---:|:---:|:---:|
-| <img src=".github/demo4.jpg" width="250"> | <img src=".github/demo2.jpg" width="250"> | <img src=".github/wokwi.png" width="250"> |
+| <img src=".github/demo5.jpg" width="250"> | <img src=".github/demo6.jpg" width="250"> | <img src=".github/demo2.jpg" width="250"> |
+
+| In action (breadboard) | Wokwi simulation |
+|:---:|:---:|
+| <img src=".github/demo4.jpg" width="250"> | <img src=".github/wokwi.png" width="250"> |
 
 ---
 
@@ -25,6 +29,7 @@ The full Pomodoro cycle (work → short break → work → short break → long 
 - **Adjustable brightness** — 16 intensity levels for the LED matrix.
 - **Buzzer alert** — audio signal at the end of each phase.
 - **Reset** — return to the start of a fresh Pomodoro cycle at any time.
+- **Custom 3D-printed enclosure** — turns the breadboard prototype into a finished desk device.
 
 ---
 
@@ -38,6 +43,7 @@ The full Pomodoro cycle (work → short break → work → short break → long 
 | Rotary Encoder | KY-040 digital encoder with push button |
 | Buzzer | Passive buzzer |
 | Breadboard + jumper wires | Prototyping setup |
+| 3D-printed enclosure | Custom case (see [`3d/`](3d/)) |
 
 ---
 
@@ -76,6 +82,19 @@ The full Pomodoro cycle (work → short break → work → short break → long 
 |---|---|
 | D8 | + |
 | GND | − |
+
+---
+
+## Enclosure
+
+The electronics are housed in a custom enclosure modeled in **Fusion 360** and 3D-printed. The case makes the LED matrix, OLED and rotary encoder accessible on the front face, and routes the power cable cleanly out the side.
+
+Design files are in the [`3d/`](3d/) folder:
+
+| File | Description |
+|------|-------------|
+| `pomodoro.f3d` | Editable Fusion 360 source model |
+| `pomodoro.3mf` | Print-ready mesh (slice and print directly) |
 
 ---
 
@@ -135,12 +154,19 @@ pio run --target upload
 
 The repo includes `diagram.json` and `wokwi.toml`, so the project can be run directly in the [Wokwi VS Code extension](https://docs.wokwi.com/vscode/getting-started).
 
+### Print the enclosure
+
+Slice `3d/pomodoro.3mf` in your slicer of choice and print. Open `3d/pomodoro.f3d` in Fusion 360 if you want to tweak the dimensions.
+
 ---
 
 ## Project Structure
 
 ```
 pomodoro/
+├── 3d/
+│   ├── pomodoro.3mf    # Print-ready mesh
+│   └── pomodoro.f3d    # Fusion 360 source model
 ├── diagram.json        # Wokwi circuit definition
 ├── wokwi.toml          # Wokwi simulation config
 ├── platformio.ini      # PlatformIO project config
@@ -157,11 +183,10 @@ pomodoro/
 
 - Persist custom durations to **EEPROM** so they survive a power cycle (scaffolding is present in the source).
 - End-of-phase **melodies** instead of simple beeps (commented-out note tables included).
-- **Auto-pause** using the wired ultrasonic sensor (TRIG/ECHO) to detect when the user steps away.
 
 ---
 
 ## Context
 
 Personal project built during studies at **ECE Paris** — and put to use revising for end-of-term exams.
-Goal: practice embedded C++ programming, I²C/SPI bus management, interrupt-driven inputs, and hardware prototyping.
+Goal: practice embedded C++ programming, I²C/SPI bus management, interrupt-driven inputs, hardware prototyping, and 3D enclosure design.
