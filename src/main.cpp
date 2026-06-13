@@ -55,7 +55,6 @@ byte activite=0;
 boolean pause=true;
 byte stage=0;
 unsigned long lastSecond= millis();
-boolean points=true;
 boolean longBreak=false;
 
 //dessin des chiffres dans la matrices led
@@ -177,7 +176,6 @@ void affichage_chiffre(byte matrice, byte chiffre) {
 void affichageTime(){
   if(millis()-lastSecond>=1000 && !pause){
     time--;
-    points=!points;
     lastSecond=millis();
   }
   int minutes=(time/60);
@@ -188,19 +186,6 @@ void affichageTime(){
   //affichage des secondes
   affichage_chiffre(1,secondes/10);
   affichage_chiffre(0,secondes%10);
-  //affichage des deux points
-  if(points){
-    matriceled.setLed(1, 2, 0, true);
-    matriceled.setLed(1, 5, 0, true);
-    matriceled.setLed(2, 2, 7, false);
-    matriceled.setLed(2, 5, 7, false);
-  }
-  else{
-    matriceled.setLed(2, 2, 7, true);
-    matriceled.setLed(2, 5, 7, true);
-    matriceled.setLed(1, 2, 0, false);
-    matriceled.setLed(1, 5, 0, false);
-  }
 }
 
 void timeSettings(byte s){
