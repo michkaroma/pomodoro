@@ -326,11 +326,11 @@ void loop() {
   if(time<=0){
     switch(stage){
       case 0:
-        stage++;
+        if(longBreak)stage+=2;else stage++;
+        longBreak=!longBreak;
         break;
       case 1:
-        if(longBreak)stage++;else stage=0;
-        longBreak=!longBreak;
+        stage=0;
         break;
       case 2:
         stage=0;
