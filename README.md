@@ -2,7 +2,7 @@
 
 A physical Pomodoro timer built around an Arduino Nano, a 32×8 LED matrix, an OLED display, a rotary encoder, and a buzzer. Designed as a dedicated, distraction-free productivity device — no phone, no computer, just focused work.
 
-The full Pomodoro cycle (work → short break → work → short break → long break) runs automatically, all durations are adjustable on the device itself, and the remaining time is displayed in large hand-drawn digits on the LED matrix. The electronics are housed in a custom 3D-printed enclosure.
+The full Pomodoro cycle (work → short break → work → long break) runs automatically, all durations are adjustable on the device itself, and the remaining time is displayed in large hand-drawn digits on the LED matrix. The electronics are housed in a custom 3D-printed enclosure.
 
 > Prototyped and simulated with [Wokwi](https://wokwi.com) before hardware assembly. Built with [PlatformIO](https://platformio.org).
 
@@ -22,11 +22,11 @@ The full Pomodoro cycle (work → short break → work → short break → long 
 
 ## Features
 
-- **Full Pomodoro cycle** — automatically chains work sessions and breaks: `Pomodoro → short break → Pomodoro → short break → long break`, then repeats.
+- **Full Pomodoro cycle** — automatically chains work sessions and breaks: `Pomodoro → short break → Pomodoro → long break`, then repeats.
 - **Adjustable durations** — set the length of each phase (Pomodoro / short break / long break) directly on the device with the rotary encoder.
-- **Large countdown display** — minutes and seconds shown across the 32×8 LED matrix with a blinking colon, using hand-drawn 8×8 digit bitmaps.
+- **Large countdown display** — minutes and seconds shown across the 32×8 LED matrix using hand-drawn 8×8 digit bitmaps.
 - **OLED menu** — navigate options, start/stop the timer, and read the current phase on the 128×64 screen.
-- **Adjustable brightness** — 16 intensity levels for the LED matrix.
+- **Adjustable brightness** — cycle through 4 brightness levels for the LED matrix.
 - **Buzzer alert** — audio signal at the end of each phase.
 - **Reset** — return to the start of a fresh Pomodoro cycle at any time.
 - **Custom 3D-printed enclosure** — turns the breadboard prototype into a finished desk device.
@@ -122,16 +122,16 @@ Declare them in `platformio.ini` under `lib_deps`.
 1. On startup the OLED shows the menu: **play/stop**, **pomodoro**, **short break**, **long break**, **reset** (plus a second page for **brightness**).
 2. Rotating the encoder moves the cursor through the menu; pressing the button selects an item.
 3. Selecting a duration entry (e.g. *pomodoro*) opens a quick editor where you turn the encoder to set the minutes (0–99) and press to confirm.
-4. Pressing **play** starts the countdown, rendered on the LED matrix with a blinking colon.
+4. Pressing **play** starts the countdown, rendered on the LED matrix.
 5. When a phase reaches `0`, the buzzer sounds and the firmware advances to the next phase in the cycle:
 
    ```
-   Pomodoro ──▶ Short break ──▶ Pomodoro ──▶ Short break ──▶ Long break ──▶ (repeat)
+   Pomodoro ──▶ Short break ──▶ Pomodoro ──▶ Long break ──▶ (repeat)
    ```
 
 6. **Reset** returns to a fresh Pomodoro at any time.
 
-The countdown digits are drawn by writing custom 8×8 bitmaps (defined in the `digits[10][8]` array) to each of the four matrix modules — one module per digit — and the colon is toggled on a 1-second interval driven by `millis()`.
+The countdown digits are drawn by writing custom 8×8 bitmaps (defined in the `digits[10][8]` array) to each of the four matrix modules — one module per digit — and the timer counts down on a 1-second interval driven by `millis()`.
 
 ---
 
