@@ -45,7 +45,7 @@ byte menu=0;
 int etatPrecedentLigneCLK = digitalRead(pinArduinoRaccordementSignalCLK);
 int etatPrecedentLigneDT  = digitalRead(pinArduinoRaccordementSignalDT);
 int compteur = nombre_choix_menu;
-byte intensite=4;
+byte intensite=0;
 int secondeMinuteur=0;
 byte minuteurActiv=0;
 int stageTime[3]={25,5,15};
@@ -283,7 +283,7 @@ void fctMenu(){
         time=stageTime[0]*60;
         break;
       case 5:
-        intensite=(intensite+1)%16;
+        intensite=(intensite+4)%16;
         for (int i = 0; i < 4; i++) {
           matriceled.setIntensity(i, intensite);
         }
